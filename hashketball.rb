@@ -1,4 +1,5 @@
-# Write your code below game_hash
+require 'pry'
+
 def game_hash
   {
     home: {
@@ -126,4 +127,99 @@ def game_hash
   }
 end
 
-# Write code here
+# def num_points_scored(player_name)
+#   game_hash.each do |location, team_hash|
+#     team_hash[:players].each do |player_hash|
+#       if player_hash[:player_name] == player_name
+#         return player_hash[:points]
+#       end
+#     end
+#   end
+# end
+
+# OR 
+
+
+# OR
+# def num_points_scored(player_name)
+#   game_hash.each do |home_or_away, team_hash|
+#     player = team_hash[:players].find { |player_hash| player_hash[:player_name] == player_name} 
+#     return player[:points] if !!player
+#   end
+#   nil
+# end
+
+# OR
+
+
+# players helper method 
+# 1 helper function
+# def players
+#   game_hash[:home][:players].concat(game_hash[:away][:players])
+# end
+
+# def num_points_scored(player_name)
+#     player = players.find { |player_hash| player_hash[:player_name] == player_name} 
+#     return player[:points] if !!player
+# end
+
+# def shoe_size(player_name)
+#     player = players.find { |player_hash| player_hash[:player_name] == player_name} 
+#     return player[:shoe] if !!player
+# end
+
+# OR
+# 2 helper functions
+def players
+  game_hash[:home][:players].concat(game_hash[:away][:players])
+end
+
+# def find_by_name(player_name)
+#   player = players.find { |player_hash| player_hash[:player_name] == player_name}
+# end
+
+def num_points_scored(player_name)
+    player = player_stats(player_name)
+    return player[:points] if !!player
+end
+
+def shoe_size(player_name)
+    player = player_stats(player_name)
+    return player[:shoe] if !!player
+end
+
+def big_shoe_rebounds
+  player = players.max { |player1, player2| player1[:shoe] <=> player2[:shoe]}
+  player[:rebounds]
+end
+
+#OR
+
+# def big_shoe_rebounds
+#   player = players.max_by { |player| player [:shoe]}
+#   player[:rebounds]
+# end
+
+def player_stats(player_name)
+  player = players.find { |player_hash| player_hash[:player_name] == player_name}
+end
+
+def team_names
+  [game_hash[:home][:team_name], game_hash[:away][:team_name]]
+end
+
+def player_numbers(team_name)
+  game_hash.each do |home_or_away, team_hash|
+    if team_hash[:team_name] == team_name
+      return team_hash[:players].map { |player| player.fetch(:number)}
+    end
+  end
+end
+
+def team_colors(team_name)
+  game_hash.each do |home_or_away, team_hash|
+    if team_hash[:team_name] == team_name
+    return team_hash[:colors]
+    end
+  end
+end
